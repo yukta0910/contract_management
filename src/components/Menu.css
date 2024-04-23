@@ -1,0 +1,17 @@
+.menu-options{
+    background: linear-gradient(90deg, rgb(200 220 238), #d6e6ed);
+    /* background-color: rgb(200 220 238); */
+    display: flex;
+    gap: 3rem;
+    height: 1.5rem;
+    align-items: center;
+}
+.menu-options a{
+    text-decoration: none;
+    color: rgb(0, 85, 145);
+    font-family: "LindeDaxLig", Arial, sans-serif;
+    font-size: 1rem;
+    font-stretch: condensed;
+    padding-left: 1rem;
+    
+}

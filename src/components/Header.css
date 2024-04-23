@@ -1,0 +1,17 @@
+.header{
+    display: flex;
+    background-color: rgb(178 208 230);
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+}
+.heading{
+    font-size: 1.1rem;
+    font-stretch: condensed;
+    padding-left: 1rem;
+}
+.logo img{
+    height: 3rem;
+    padding-right: 1rem;
+}
+

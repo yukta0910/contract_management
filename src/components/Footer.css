@@ -1,0 +1,13 @@
+.footer{
+    /* background-color: rgb(98, 174, 228); */
+    background: rgb(178 208 230);
+    height: 1.5rem;
+    width: 100vw;
+    text-align: center;
+    align-content: center;
+    position: fixed;
+    bottom: 0px;
+}
+
+
+    
