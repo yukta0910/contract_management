@@ -169,70 +169,149 @@
 // export default Point;
 
 
+// import { useEffect, useState } from 'react';
+// import { contracts } from './configuration';
+// import AddContract from './AddContract';
+// import { Fab } from '@mui/material';
+// import AddIcon from '@mui/icons-material/Add';
+
+// function Point() {
+//     const [showForm, setShowForm] = useState(false);
+//     const [initialId, setId] = useState(1);
+//     const [newPoints, setNewPoints] = useState<{ pointName: string; value: number }[]>([]);
+
+//     const add_contract = () => {
+//         setShowForm(!showForm);
+//     };
+
+//     const savedDataHandler = (newEntry: { Name: string; Value: number }) => {
+//         const newData = {
+//             // contractId: initialId,
+//             pointName: newEntry.Name,
+//             value: newEntry.Value,
+//         };
+//         setNewPoints(prevPoints => [...prevPoints, newData]);
+//         console.log(newPoints);
+//     };
+
+//     const handleContractChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+//         setId(parseInt(event.target.value));
+//     };
+
+//     useEffect(() => {
+//         const selectedContracts = contracts.filter(contract => contract.id === initialId);
+//         selectedContracts && setNewPoints(selectedContracts[0].points);
+//     }, [initialId]);
+//     // Merge existing points with newly added points for the selected contract
+
+//     return (
+//         <div>
+//             <h1>Points</h1>
+//             <label htmlFor="contract_selection">Contracts </label>
+//             <select name="contract_selection" onChange={handleContractChange}>
+//                 {contracts.map(contract => (
+//                     <option key={contract.id} value={contract.id}>
+//                         {contract.name}
+//                     </option>
+//                 ))}
+//             </select>
+//             {/* <button onClick={add_contract}>Add Point</button> */}
+//             <Fab size="small" color="primary" onClick={add_contract} aria-label="add">
+//   <AddIcon />
+// </Fab>
+//             {showForm && <AddContract onSaveHandler={savedDataHandler} />}
+//             {newPoints.length > 0 &&
+//                 newPoints.map((point, index) => (
+//                     <div key={index}>
+//                         <ul>
+//                             <li key={index}>
+//                                 Point Name: {point.pointName}
+//                                 <br />
+//                                 Value: {point.value}
+//                                 <hr />
+//                             </li>
+//                         </ul>
+//                     </div>
+//                 ))}
+//         </div>
+//     );
+// }
+
+// export default Point;
+
 import { useEffect, useState } from 'react';
 import { contracts } from './configuration';
 import AddContract from './AddContract';
-import { Fab } from '@mui/material';
+import { Fab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem, Button, Box, Typography, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { SelectChangeEvent } from '@mui/material';
 
 function Point() {
-    const [showForm, setShowForm] = useState(false);
     const [initialId, setId] = useState(1);
     const [newPoints, setNewPoints] = useState<{ pointName: string; value: number }[]>([]);
 
-    const add_contract = () => {
-        setShowForm(!showForm);
-    };
-
     const savedDataHandler = (newEntry: { Name: string; Value: number }) => {
+        
         const newData = {
-            // contractId: initialId,
             pointName: newEntry.Name,
             value: newEntry.Value,
         };
         setNewPoints(prevPoints => [...prevPoints, newData]);
-        console.log(newPoints);
     };
 
-    const handleContractChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setId(parseInt(event.target.value));
+    const handleContractChange = (event: SelectChangeEvent<number>) => {
+        setId(Number(event.target.value));
     };
+    
 
     useEffect(() => {
         const selectedContracts = contracts.filter(contract => contract.id === initialId);
         selectedContracts && setNewPoints(selectedContracts[0].points);
     }, [initialId]);
-    // Merge existing points with newly added points for the selected contract
 
     return (
-        <div>
-            <h1>Points</h1>
-            <label htmlFor="contract_selection">Contracts </label>
-            <select name="contract_selection" onChange={handleContractChange}>
+        <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px' }}>
+            
+            <Typography variant="h5" align="center" gutterBottom>Points List</Typography>
+            <Box sx={{display:'flex', justifyContent:'space-between'}}>
+            <Select
+                name="contract_selection"
+                value={initialId}
+                onChange={handleContractChange}
+                sx={{height:'35px'}}
+            >
                 {contracts.map(contract => (
-                    <option key={contract.id} value={contract.id}>
+                    <MenuItem key={contract.id} value={contract.id}>
                         {contract.name}
-                    </option>
+                    </MenuItem>
                 ))}
-            </select>
-            {/* <button onClick={add_contract}>Add Point</button> */}
-            <Fab size="small" color="primary" onClick={add_contract} aria-label="add">
-  <AddIcon />
-</Fab>
-            {showForm && <AddContract onSaveHandler={savedDataHandler} />}
-            {newPoints.length > 0 &&
-                newPoints.map((point, index) => (
-                    <div key={index}>
-                        <ul>
-                            <li key={index}>
-                                Point Name: {point.pointName}
-                                <br />
-                                Value: {point.value}
-                                <hr />
-                            </li>
-                        </ul>
-                    </div>
-                ))}
+            </Select>
+            {/* <IconButton color="primary">
+                 <AddIcon onClick={add_contract}/>
+            </IconButton> */}
+            </Box>
+            
+            <AddContract onSaveHandler={savedDataHandler} />
+            {newPoints.length > 0 && (
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow style={{ backgroundColor: '#f0f0f0' }}>
+                                <TableCell><strong>Point Name</strong></TableCell>
+                                <TableCell><strong>Value</strong></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {newPoints.map((point, index) => (
+                                <TableRow key={index} style={{ backgroundColor: index % 2 === 0 ? '#f9f9f9' : 'white' }}>
+                                    <TableCell>{point.pointName}</TableCell>
+                                    <TableCell>{point.value}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
         </div>
     );
 }
